@@ -121,6 +121,10 @@ k8s_cluster_ca_certificate = "/etc/rancher/k3s/ca.pem"
 
 Feel free to submit issues and pull requests to improve the project. Contributions are welcome!
 
-## License
+## Testing
 
-This project is licensed under the MIT License.
+Testing needs to be done and changes made, so far this is WIP.
+
+## Next Steps
+
+Switch from `cloud-init` to using an image backed with EIB, if it makes sense to run Gitlab on SLE Micro 6.x
