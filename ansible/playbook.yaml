@@ -1,0 +1,37 @@
+---
+- name: Configure VM
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure Podman is installed
+      dnf:
+        name: podman
+        state: present
+
+    - name: Add SSH key for 'george'
+      authorized_key:
+        user: george
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO0Ndoc42s70At7WJAjqQqJpYkltMUV5tpwAUmmNdIpi"
+
+#    - name: Configure static IP
+#      copy:
+#        dest: /etc/sysconfig/network-scripts/ifcfg-ens3
+#        content: |
+#          TYPE=Ethernet
+#          BOOTPROTO=none
+#          IPADDR=192.168.64.99
+#          PREFIX=24
+#          GATEWAY=192.168.64.1
+#          DNS1=8.8.8.8
+#          DNS2=8.8.4.4
+#          DEVICE=ens3
+#          ONBOOT=yes
+
+    - name: Restart Network Manager
+      command: nmcli connection reload
+
+    - name: Install k3s
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s

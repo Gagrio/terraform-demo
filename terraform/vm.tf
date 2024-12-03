@@ -1,14 +1,15 @@
+# Create VM
 resource "libvirt_volume" "boot_iso" {
   name   = "Fedora.iso"
-  source = "~/Downloads/Fedora.iso"
-  pool   = "terraform"
+  source = "/home/george/Downloads/Fedora.iso"
+  pool   = "default"
   format = "iso"
 }
 
 resource "libvirt_volume" "vm_disk" {
   name   = "vm-disk.qcow2"
   size   = var.disk_size * 1024
-  pool   = "terraform"
+  pool   = "default"
   format = "qcow2"
 }
 
@@ -27,15 +28,19 @@ resource "libvirt_domain" "vm" {
   }
 
   network_interface {
-    hostname = "terraform-demo"
+    hostname     = "terraform-demo"
     network_name = "default"
-    mac  = "00:00:00:00:00:06"
-    addresses    = ["192.168.64.100"]
+    mac          = "00:00:00:00:00:06"
+    addresses    = ["192.168.64.99"]
   }
 
   boot_device {
     dev = ["cdrom", "hd"]
   }
 
-  cloudinit = file("${path.module}/cloud_init.yaml")
+  # Enable this after VM is created
+  #  provisioner "local-exec" {
+  #  command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /home/george/repos/terraform-demo/ansible/inventory.ini /home/george/repos/terraform-demo/ansible/playbook.yaml"
+  #}
+
 }

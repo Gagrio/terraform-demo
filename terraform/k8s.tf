@@ -1,18 +1,22 @@
-# Move this to terraform directory once the VM and k3s is up to configure the hello-world kubernetes app.
+# Uncomment this after VM is created
+/*
+
 provider "kubernetes" {
-  host                   = "https://192.168.64.100:6443"
-  cluster_ca_certificate = file(var.cert_cluster_ca)
-  client_certificate     = file(var.cert_client_cert)
-  client_key             = file(var.cert_client_key)
+  host = "https://192.168.64.100:6443"
+  #cluster_ca_certificate = file(var.cert_cluster_ca)
+  #client_certificate     = file(var.cert_client_cert)
+  #client_key             = file(var.cert_client_key)
 }
 
-resource "kubernetes_namespace" "default" {
+resource "kubernetes_namespace" "hello_world" {
+  #depends_on = [null_resource.configure_vm] # Ensure Ansible runs before this resource
   metadata {
-    name = "default"
+    name = "hello-world"
   }
 }
 
 resource "kubernetes_deployment" "hello_world" {
+  #depends_on = [null_resource.configure_vm] # Ensure Ansible runs before this resource
   metadata {
     name = "hello-world"
     labels = {
@@ -47,6 +51,7 @@ resource "kubernetes_deployment" "hello_world" {
 }
 
 resource "kubernetes_service" "hello_world" {
+  #depends_on = [null_resource.configure_vm] # Ensure Ansible runs before this resource
   metadata {
     name = "hello-world"
   }
@@ -62,3 +67,5 @@ resource "kubernetes_service" "hello_world" {
     type = "ClusterIP"
   }
 }
+
+*/
