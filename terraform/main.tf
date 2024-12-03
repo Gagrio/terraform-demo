@@ -1,5 +1,16 @@
-# No need for any extra configuration in main.tf. The resources are being pulled in
-# from other files as modules or direct declarations.
+terraform {
+  required_providers {
+    libvirt = {
+      source  = "dmacvicar/libvirt"
+      version = ">= 0.6.0"
+    }
+    #    kubernetes = {
+    #  source  = "hashicorp/kubernetes"
+    #  version = "~> 2.0"
+    #}
+  }
+}
 
-# Providers are already defined in providers.tf
-# Resources like VMs and Kubernetes resources are already defined in their respective files.
+provider "libvirt" {
+  uri = "qemu:///system"
+}

@@ -1,0 +1,35 @@
+# Set up users and SSH keys
+users:
+  - name: root
+    ssh-authorized-keys:
+      - ssh-rsa <your_root_public_key>
+  - name: george
+    ssh-authorized-keys:
+      - ssh-rsa <your_george_public_key>
+
+# Install necessary software (Podman, K3s)
+packages:
+  - podman
+  - curl
+
+# Run commands after installation
+runcmd:
+  - curl -sfL https://get.k3s.io | sh -s -  # Install K3s
+
+# Set static IP configuration
+write_files:
+  - path: /etc/netplan/00-installer-config.yaml
+    content: |
+      network:
+        version: 2
+        renderer: networkd
+        ethernets:
+          ens3:
+            dhcp4: false
+            addresses:
+              - 192.168.64.100/24
+            gateway4: 192.168.64.1
+            nameservers:
+              addresses:
+                - 8.8.8.8
+                - 8.8.4.4
