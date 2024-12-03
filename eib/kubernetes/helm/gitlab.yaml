@@ -1,8 +1,8 @@
+---
 global:
   edition: ce
   hosts:
-    domain: example.com
-    externalIP: 10.0.0.100
+    externalIP: 192.168.64.100
   ingress:
     configureCertmanager: false
     tls:
